@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Pequeños Exploradores Shock - El León Explorador | Shock 99.5 FM & Theos Logos</title>
+    <title>Jesús el León - Pequeños Exploradores Shock | Shock 99.5 FM & Theos Logos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -15,19 +15,27 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: #050208;
+            background-color: #030206;
             color: #f3f4f6;
             overflow-x: hidden;
             user-select: none;
             min-height: 100vh;
         }
 
-        .font-cinzel {
-            font-family: 'Cinzel', serif;
+        .font-cinzel { font-family: 'Cinzel', serif; }
+
+        #celebration-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none !important;
+            z-index: 60;
         }
 
         .glass-card {
-            background: rgba(18, 12, 5, 0.94);
+            background: rgba(18, 12, 5, 0.95);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(245, 158, 11, 0.4);
@@ -59,11 +67,20 @@
             100% { transform: scale(1.05); }
         }
 
-        #snake-canvas {
+        #runner-canvas {
             background: radial-gradient(circle, #1e1306 0%, #080401 100%);
             border: 2px solid rgba(245, 158, 11, 0.5);
             box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
             touch-action: none;
+        }
+
+        .flash-screen {
+            animation: flashAnim 0.3s ease-out;
+        }
+
+        @keyframes flashAnim {
+            0% { background-color: rgba(255, 215, 0, 0.6); }
+            100% { background-color: transparent; }
         }
 
         ::-webkit-scrollbar { width: 4px; }
@@ -73,7 +90,9 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between relative selection:bg-amber-500 selection:text-black">
 
-    <!-- OVERLAY DE NARRATIVA INICIAL -->
+    <canvas id="celebration-canvas"></canvas>
+
+    <!-- NARRATIVA INICIAL -->
     <div id="narrative-overlay" class="fixed inset-0 bg-black/98 z-50 flex flex-col items-center justify-center p-4 sm:p-6 text-center">
         <div class="max-w-2xl w-full glass-card rounded-3xl p-6 sm:p-8 border-2 border-amber-500/80 shadow-[0_0_60px_rgba(245,158,11,0.5)] flex flex-col items-center">
             
@@ -81,27 +100,27 @@
                 <img src="shock.png" alt="Shock 99.5 FM" class="h-16 object-contain drop-shadow-[0_0_15px_rgba(255,120,0,0.8)]" onError="renderFallbackShockLogo('narrative-logo-container', 64);">
             </div>
 
-            <h1 class="font-cinzel text-lg sm:text-2xl font-bold text-amber-300 mb-2">El León Explorador en la Sabana</h1>
-            <p class="text-xs sm:text-xs font-semibold text-yellow-400 mb-4 uppercase tracking-widest">Proverbios 28:1 • Valentía y Sabiduría</p>
+            <h1 class="font-cinzel text-xl sm:text-2xl font-bold text-amber-300 mb-1">JESÚS EL LEÓN</h1>
+            <p class="text-xs font-bold text-yellow-400 mb-4 uppercase tracking-widest">Apocalipsis 5:5 • El León de la Tribu de Judá</p>
 
             <div class="bg-amber-950/40 p-4 sm:p-5 rounded-2xl border border-amber-500/30 mb-6 text-left max-h-[220px] sm:max-h-[260px] overflow-y-auto space-y-3">
                 <p id="narrative-text-1" class="text-xs sm:text-sm text-stone-200 leading-relaxed">
-                    En la inmensidad de la sabana, el león es conocido por su gran valor y fuerza. En las historias bíblicas, los leones representan protección, realeza y la valentía que Dios otorga a sus hijos para superar cualquier obstáculo en el camino de la vida.
+                    Las Escrituras nos revelan una verdad gloriosa: Jesús es el verdadero León, el León de la tribu de Judá, quien con su infinito amor y poder venció al mundo y a la muerte para darnos vida eterna.
                 </p>
                 <p id="narrative-text-2" class="text-xs sm:text-sm text-stone-200 leading-relaxed">
-                    Nuestro valiente león explorador ha salido a recorrer los senderos dorados en busca de tesoros y coronas de sabiduría. Con cada tesoro que recolecta, crece su agilidad y se desbloquean poderosas verdades y versículos bíblicos para fortalecer nuestra fe.
+                    En este juego inspirado en Su victoria, guiarás al león explorador superando los obstáculos del camino. A medida que avanzas de nivel, la dificultad aumenta y, por cada 3 rocas superadas, obtendrás una corona, un Rayo Shock y una enseñanza bíblica explicada.
                 </p>
                 <p id="narrative-text-3" class="text-xs sm:text-sm text-amber-200 font-semibold leading-relaxed border-t border-amber-500/30 pt-3">
-                    Usa las flechas de tu teclado o los controles táctiles en pantalla para guiar al león, esquivar los bordes y atrapar todos los tesoros de la sabana. ¡Acompañanos en esta emocionante aventura de destreza y conocimiento!
+                    Escucha la narración completa para poder comenzar el desafío. ¡Supera los 40 niveles y alcanza el Gran Trofeo de Theos Logos!
                 </p>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3 w-full">
-                <button onclick="triggerNarrativeVoice()" class="flex-1 py-3 px-4 rounded-xl bg-amber-900/60 border border-amber-500/40 text-amber-300 hover:text-white font-bold text-xs transition flex items-center justify-center gap-2">
+                <button onclick="triggerNarrativeVoice()" class="flex-1 py-3.5 px-4 rounded-xl bg-amber-900/60 border border-amber-500/40 text-amber-300 hover:text-white font-bold text-xs transition flex items-center justify-center gap-2">
                     <i class="fa-solid fa-volume-high text-yellow-400"></i> Escuchar Narración
                 </button>
-                <button id="start-mission-btn" onclick="startMainGameFromNarrative()" disabled class="flex-1 py-3 px-6 rounded-xl bg-stone-700 text-stone-400 font-black uppercase text-xs shadow-lg transition opacity-50 cursor-not-allowed flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-lock"></i> Esperando Narración...
+                <button id="start-mission-btn" onclick="startMainGameFromNarrative()" disabled class="flex-1 py-3.5 px-6 rounded-xl bg-stone-800 text-stone-500 font-black uppercase text-xs shadow-lg transition opacity-50 cursor-not-allowed flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock" id="start-lock-icon"></i> <span id="start-btn-text">Esperando Narración...</span>
                 </button>
             </div>
         </div>
@@ -118,12 +137,11 @@
                     <img src="shock.png" alt="Shock 99.5 FM" class="h-9 sm:h-14 object-contain drop-shadow-[0_0_12px_rgba(255,120,0,0.8)]" onError="renderFallbackShockLogo('header-logo-container', 48);">
                 </div>
 
-                <!-- HUD PUNTOS Y AUDIO -->
+                <!-- HUD -->
                 <div class="flex items-center gap-1.5 sm:gap-3 bg-stone-900/90 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-xl sm:rounded-2xl border border-amber-500/40">
-                    
-                    <button onclick="openNarrativeModal()" class="text-yellow-400 hover:text-yellow-300 transition flex items-center gap-1 text-[11px] sm:text-xs font-bold bg-amber-950/60 px-2.5 sm:px-3 py-1 rounded-lg border border-amber-600/40" title="Reseña del León">
+                    <button onclick="openNarrativeModal()" class="text-yellow-400 hover:text-yellow-300 transition flex items-center gap-1 text-[11px] sm:text-xs font-bold bg-amber-950/60 px-2.5 sm:px-3 py-1 rounded-lg border border-amber-600/40">
                         <i class="fa-solid fa-book-bible text-yellow-300 text-xs sm:text-sm animate-pulse"></i>
-                        <span class="hidden md:inline">El León</span>
+                        <span class="hidden md:inline">Jesús el León</span>
                     </button>
 
                     <button id="tts-toggle" onclick="toggleAudio()" class="text-amber-400 hover:text-amber-300 transition flex items-center gap-1 text-[11px] sm:text-xs font-bold bg-amber-950/60 px-2 sm:px-3 py-1 rounded-lg border border-amber-600/40">
@@ -138,7 +156,7 @@
                     <div class="flex items-center gap-1.5 text-yellow-400 font-bold border-l border-amber-500/30 pl-2 sm:pl-3">
                         <i class="fa-solid fa-crown text-amber-300 text-sm sm:text-lg drop-shadow-[0_0_10px_rgba(251,191,36,0.9)]"></i>
                         <div class="flex flex-col text-left">
-                            <span class="text-[8px] sm:text-[9px] uppercase tracking-wider text-amber-200/70 font-semibold leading-none">TESOROS</span>
+                            <span class="text-[8px] sm:text-[9px] uppercase tracking-wider text-amber-200/70 font-semibold leading-none">CORONAS</span>
                             <span id="star-score-hud" class="font-black text-xs sm:text-base leading-none text-yellow-300">0 / 40</span>
                         </div>
                     </div>
@@ -147,10 +165,10 @@
             </div>
         </header>
 
-        <!-- MAIN AREA: 3 COLUMNAS PARA PC -->
+        <!-- MAIN AREA -->
         <main class="flex-grow max-w-7xl w-full mx-auto p-2.5 sm:p-6 my-1 sm:my-2 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
             
-            <!-- 1. COLUMNA IZQUIERDA: RUTA DE NIVELES / VERSÍCULOS -->
+            <!-- 1. COLUMNA IZQUIERDA: RUTA DE NIVELES -->
             <section class="lg:col-span-3 glass-card rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-amber-500/40 order-2 lg:order-1">
                 <div class="flex justify-between items-center mb-2 sm:mb-3 pb-1.5 border-b border-amber-500/20">
                     <h3 class="font-cinzel text-amber-300 font-bold text-xs sm:text-sm uppercase flex items-center gap-1.5">
@@ -162,50 +180,45 @@
                 <div class="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-4 gap-2 max-h-[320px] lg:max-h-[460px] overflow-y-auto pr-1" id="levels-grid-container"></div>
             </section>
 
-            <!-- 2. COLUMNA CENTRO: EL JUEGO DE LA CULEBRITA (LEÓN) -->
+            <!-- 2. COLUMNA CENTRO: CANVAS RUNNER -->
             <section class="lg:col-span-6 glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 relative border border-amber-500/40 shadow-[0_0_50px_rgba(0,0,0,0.9)] order-1 lg:order-2 flex flex-col items-center">
                 
                 <div class="w-full flex flex-row justify-between items-center gap-2 mb-3 pb-2 border-b border-amber-500/20">
                     <span id="mission-badge" class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-extrabold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1.5">
-                        <i class="fa-solid fa-compass text-yellow-400"></i> Proverbios 28:1
+                        <i class="fa-solid fa-compass text-yellow-400"></i> Apocalipsis 5:5
                     </span>
                     
                     <div class="text-right">
                         <span id="level-indicator" class="text-[11px] sm:text-xs font-extrabold text-amber-300 uppercase tracking-wider block">
                             Nivel 1 de 40
                         </span>
-                        <span id="group-indicator" class="text-[10px] sm:text-[11px] text-amber-200/70 font-semibold italic block">
-                            Atrapa los Tesoros de la Sabana
+                        <span id="obstacles-counter" class="text-[10px] sm:text-[11px] text-yellow-300 font-bold block">
+                            Rocas superadas: 0 / 3
                         </span>
                     </div>
                 </div>
 
-                <!-- CANVAS DEL JUEGO -->
+                <!-- CANVAS DEL JUEGO RUNNER -->
                 <div class="relative w-full flex justify-center mb-3">
-                    <canvas id="snake-canvas" width="400" height="340" class="rounded-2xl max-w-full h-auto"></canvas>
+                    <canvas id="runner-canvas" width="480" height="260" class="rounded-2xl max-w-full h-auto cursor-pointer" onclick="jumpLion()"></canvas>
                 </div>
 
-                <!-- CONTROLES TÁCTILES EN PANTALLA (IDEAL PARA CELULARES Y TABLETS) -->
-                <div class="grid grid-cols-3 gap-2 w-full max-w-[240px] mb-2">
-                    <div></div>
-                    <button onclick="changeDirection('UP')" class="p-3 bg-amber-900/60 border border-amber-500/40 text-amber-200 rounded-xl active:bg-amber-700 transition flex items-center justify-center text-base"><i class="fa-solid fa-arrow-up"></i></button>
-                    <div></div>
-                    <button onclick="changeDirection('LEFT')" class="p-3 bg-amber-900/60 border border-amber-500/40 text-amber-200 rounded-xl active:bg-amber-700 transition flex items-center justify-center text-base"><i class="fa-solid fa-arrow-left"></i></button>
-                    <button onclick="changeDirection('DOWN')" class="p-3 bg-amber-900/60 border border-amber-500/40 text-amber-200 rounded-xl active:bg-amber-700 transition flex items-center justify-center text-base"><i class="fa-solid fa-arrow-down"></i></button>
-                    <button onclick="changeDirection('RIGHT')" class="p-3 bg-amber-900/60 border border-amber-500/40 text-amber-200 rounded-xl active:bg-amber-700 transition flex items-center justify-center text-base"><i class="fa-solid fa-arrow-right"></i></button>
-                </div>
+                <!-- BOTÓN DE SALTO TÁCTIL -->
+                <button onclick="jumpLion()" class="w-full max-w-[280px] py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black font-black uppercase text-xs shadow-lg active:scale-95 transition flex items-center justify-center gap-2 mb-2">
+                    <i class="fa-solid fa-angles-up text-base"></i> ¡SALTAR! (Toca o Espacio)
+                </button>
 
                 <p class="text-[10px] sm:text-[11px] text-amber-200/60 text-center italic">
-                    Usa las flechas del teclado o los botones táctiles para mover al león 🦁
+                    Jesús venció al mundo. ¡Salta las rocas para desbloquear las coronas y versículos! 🦁
                 </p>
 
             </section>
 
-            <!-- 3. COLUMNA DERECHA: REDIL / TESOROS ACUMULADOS -->
+            <!-- 3. COLUMNA DERECHA: CORONAS ACUMULADAS -->
             <section class="lg:col-span-3 glass-card rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-amber-500/40 order-3 flex flex-col items-center">
                 <div class="w-full flex justify-between items-center mb-2 pb-1.5 border-b border-amber-500/20 text-center">
                     <h3 class="font-cinzel text-amber-300 font-bold text-xs uppercase flex items-center gap-1">
-                        <i class="fa-solid fa-gem text-amber-400"></i> Tesoros del León
+                        <i class="fa-solid fa-crown text-amber-400"></i> Coronas de Sabiduría
                     </h3>
                     <span id="rescued-count" class="text-xs font-black text-yellow-300">0 / 40</span>
                 </div>
@@ -217,29 +230,29 @@
 
         <!-- FOOTER -->
         <footer class="w-full text-center py-2.5 bg-black/90 border-t border-amber-950 text-amber-200/50 text-[10px] sm:text-xs z-10">
-            El León Explorador &copy; Shock 99.5 FM — Producido para <span class="text-yellow-400 font-bold">Theos Logos</span>
+            Jesús el León &copy; Shock 99.5 FM — Producido para <span class="text-yellow-400 font-bold">Theos Logos</span>
         </footer>
 
     </div>
 
-    <!-- MODAL DE VERSÍCULOS AL PASAR CADA NIVEL -->
+    <!-- MODAL DE VERSÍCULOS CON Candado Bloqueante hasta terminar audio -->
     <div id="verse-modal" class="fixed inset-0 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 hidden z-50">
         <div class="max-w-md w-full glass-card rounded-3xl p-6 text-center border-2 border-amber-400/80 shadow-[0_0_60px_rgba(245,158,11,0.6)] flex flex-col items-center">
             
-            <div class="p-3 rounded-full bg-amber-500/20 border border-amber-400/50 mb-3">
-                <i class="fa-solid fa-book-bible text-4xl text-amber-300"></i>
+            <div class="p-3 rounded-full bg-amber-500/20 border border-amber-400/50 mb-3 animate-bounce">
+                <i class="fa-solid fa-bolt text-4xl text-yellow-300"></i>
             </div>
 
-            <h3 id="modal-level-title" class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-1">¡TESORO ATRAPADO!</h3>
-            <h2 class="text-xl font-bold text-white font-cinzel mb-3">Sabiduría de la Sabana</h2>
+            <h3 id="modal-level-title" class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-1">¡RAYO SHOCK ACTIVADO!</h3>
+            <h2 class="text-xl font-bold text-white font-cinzel mb-3">Corona de Sabiduría Ganada</h2>
 
             <div class="bg-black/60 p-4 rounded-2xl border border-amber-500/30 mb-4 text-left w-full">
                 <p id="modal-verse" class="text-xs sm:text-sm text-yellow-200 font-semibold italic mb-2 leading-relaxed"></p>
                 <p id="modal-explanation" class="text-[11px] sm:text-xs text-stone-300 leading-relaxed"></p>
             </div>
 
-            <button id="next-level-btn" onclick="closeVerseModalAndContinue()" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black uppercase text-xs shadow-lg cursor-pointer">
-                <i class="fa-solid fa-arrow-right mr-1.5"></i> Siguiente Nivel
+            <button id="next-level-btn" onclick="closeVerseModalAndContinue()" disabled class="w-full py-3.5 rounded-xl bg-stone-800 text-stone-500 font-black uppercase text-xs shadow-lg transition opacity-50 cursor-not-allowed flex items-center justify-center gap-2">
+                <i class="fa-solid fa-lock" id="verse-lock-icon"></i> <span id="verse-btn-text">Escuchando Versículo...</span>
             </button>
         </div>
     </div>
@@ -252,15 +265,15 @@
                     <i class="fa-solid fa-trophy text-4xl sm:text-5xl text-yellow-400"></i>
                 </div>
 
-                <h3 class="text-amber-200 text-[10px] sm:text-xs uppercase font-extrabold tracking-widest mb-1">¡MISIÓN CUMPLIDA!</h3>
-                <h2 class="text-xl sm:text-2xl font-bold text-white mb-2 font-cinzel">Rey de la Sabana Fiel</h2>
+                <h3 class="text-amber-200 text-[10px] sm:text-xs uppercase font-extrabold tracking-widest mb-1">¡VICTORIA TOTAL!</h3>
+                <h2 class="text-xl sm:text-2xl font-bold text-white mb-2 font-cinzel">Theos Logos & Shock 99.5 FM</h2>
 
                 <div id="trophy-logo-container" class="my-3 p-3 w-full rounded-2xl bg-black/80 border border-yellow-500/40 flex items-center justify-center min-h-[90px]">
                     <img src="theos.png" alt="Theos Logos" class="max-h-20 sm:max-h-28 object-contain" onError="renderFallbackTheosLogo('trophy-logo-container');">
                 </div>
 
                 <p class="text-stone-300 text-xs sm:text-sm mb-4 leading-relaxed">
-                    ¡Has superado los 40 niveles guiando al león explorador y atrapando todos los tesoros de sabiduría bíblica!
+                    ¡Has superado con éxito los 40 niveles, acumulando las 40 coronas en la victoria de Jesús el León!
                 </p>
 
                 <div class="w-full space-y-2">
@@ -272,7 +285,6 @@
         </div>
     </div>
 
-    <!-- SCRIPT DEL JUEGO TIPO CULEBRITA -->
     <script>
         function renderFallbackShockLogo(containerId, height = 48) {
             const container = document.getElementById(containerId);
@@ -299,48 +311,47 @@
             `;
         }
 
-        // 40 VERSÍCULOS Y EXPLICACIONES
         const versesDB = [
-            { verse: "Proverbios 28:1 — 'El justo os a os os confiados como un león.'", explanation: "Dios nos da valentía inquebrantable en todo momento." },
-            { verse: "Salmos 23:1 — 'Jehová es mi pastor; nada me faltará.'", explanation: "Con Dios como guía, nunca nos faltará su providencia." },
-            { verse: "Isaías 41:10 — 'No temas, porque yo estoy contigo.'", explanation: "Su mano protectora nos sostiene siempre." },
-            { verse: "Filipenses 4:13 — 'Todo lo puedo en Cristo que me fortalece.'", explanation: "Su poder nos capacita para alcanzar cada meta." },
-            { verse: "Salmos 27:1 — 'El Señor es mi luz y mi salvación; ¿de quién temeré?'", explanation: "Su luz disipa cualquier oscuridad." },
-            { verse: "Josué 1:9 — 'Esfuérzate y sé valiente; no temas... porque Jehová tu Dios estará contigo.'", explanation: "El valor proviene de saber que Dios va a nuestro lado." },
-            { verse: "Salmos 46:1 — 'Dios es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones.'", explanation: "Siempre podemos refugiarnos en su amor." },
-            { verse: "Proverbios 3:5 — 'Confía en Jehová con todo tu corazón, y no te apoyes en tu propia prudencia.'", explanation: "La sabiduría de Dios supera cualquier razonamiento humano." },
-            { verse: "Romanos 8:31 — 'Si Dios es por nosotros, ¿quién contra nosotros?'", explanation: "Con el Creador a favor, somos más que vencedores." },
-            { verse: "Salmos 91:2 — 'Esperaré en él, y diré yo a Jehová: Esperanza mía, y castillo mío.'", explanation: "Él es nuestra torre fuerte y refugio seguro." },
-            { verse: "Isaías 40:31 — 'Pero los que esperan a Jehová tendrán nuevas fuerzas; levantarán alas como águilas.'", explanation: "Esperar en Dios renueva por completo nuestras energías." },
-            { verse: "Salmos 119:105 — 'Lámpara es a mis pies tu palabra, y lumbrera a mi camino.'", explanation: "Su palabra nos guía paso a paso con certeza." },
-            { verse: "Mateo 6:33 — 'Mas buscad primeramente el reino de Dios y su justicia, y todas estas cosas os serán añadidas.'", explanation: "Poner a Dios en primer lugar trae bendición completa." },
-            { verse: "Salmos 37:4 — 'Deléitate asimismo en Jehová, y él te concederá las peticiones de tu corazón.'", explanation: "Disfrutar de la comunión con Dios alinea nuestros deseos." },
-            { verse: "Juan 14:27 — 'La paz os dejo, mi paz os doy; yo no os la doy como el mundo la da.'", explanation: "La paz de Cristo inunda el alma de tranquilidad." },
-            { verse: "Proverbios 18:10 — 'Torre fuerte es el nombre de Jehová; a él correrá el justo, y será levantado.'", explanation: "Su nombre es protección inexpugnable." },
-            { verse: "Salmos 34:8 — 'Gustad y veis que es bueno Jehová; bienaventurado el hombre que confía en él.'", explanation: "Experimentar la bondad de Dios es maravilloso." },
-            { verse: "2 Corintios 5:7 — 'Porque por fe andamos, no por vista.'", explanation: "Confiamos en las promesas invisibles de nuestro Padre." },
-            { verse: "Salmos 121:1-2 — 'Mi socorro viene de Jehová, que hizo los cielos y la tierra.'", explanation: "El creador del universo cuida de cada detalle tuyo." },
-            { verse: "Efesios 2:10 — 'Porque somos hechura suya, creados en Cristo Jesús para buenas obras.'", explanation: "Fuiste diseñado con un propósito divino especial." },
-            { verse: "Santiago 4:8 — 'Acercaos a Dios, y él se acercará a vosotros.'", explanation: "Una relación cercana con Dios transforma nuestra vida." },
-            { verse: "Salmos 56:3 — 'En el día que temo, yo en ti confío.'", explanation: "La fe es el mejor antídoto contra el temor." },
-            { verse: "Colosenses 3:23 — 'Y todo lo que hagáis, hacedlo de corazón, como para el Señor.'", explanation: "Nuestra labor diaria debe reflejar excelencia para Dios." },
-            { verse: "Salmos 23:3 — 'Confortará mi alma; me guiará por sendas de justicia por amor de su nombre.'", explanation: "Él restaura nuestras fuerzas y nos encamina bien." },
-            { verse: "Gálatas 5:22 — 'Mas el fruto del Espíritu es amor, gozo, paz, paciencia, benignidad...'", explanation: "Su Espíritu produce un carácter hermoso en nosotros." },
-            { verse: "Salmos 138:3 — 'En el día que llamé, me respondiste; me alentaste con fortaleza en mi alma.'", explanation: "Dios siempre responde al clamor de sus hijos." },
-            { verse: "1 Juan 4:19 — 'Nosotros le amamos a él, porque él nos amó primero.'", explanation: "Su amor inagotable nos alcanzó primero." },
-            { verse: "Salmos 19:14 — 'Sean gratos los dichos de mi boca y la meditación de mi corazón delante de ti.'", explanation: "Buscamos agradar a Dios con palabras y pensamientos." },
-            { verse: "Hebreos 11:1 — 'Es, pues, la fe la certeza de lo que se espera, la convicción de lo que no se ve.'", explanation: "La fe nos mantiene firmes en las promesas divinas." },
-            { verse: "Salmos 84:11 — 'Porque sol y escudo es Jehová Dios; gracia y gloria dará.'", explanation: "Dios nos ilumina y nos protege con su favor." },
-            { verse: "Zacarías 4:6 — 'No con ejército, ni con fuerza, sino con mi Espíritu, ha dicho Jehová de los ejércitos.'", explanation: "Las grandes victorias se logran con el poder de Dios." },
-            { verse: "Salmos 107:1 — 'Alabad a Jehová, porque él es bueno, porque para siempre es su misericordia.'", explanation: "Su gran misericordia nunca se agota." },
-            { verse: "Romanos 12:2 — 'No os conforméis a este siglo, sino transformaos por medio de la renovación de vuestro entendimiento.'", explanation: "Renovamos nuestra mente con su palabra diaria." },
-            { verse: "Salmos 121:7 — 'Jehová te guardará de todo mal; él guardará tu alma.'", explanation: "Su custodia sobre nosotros es perfecta y eterna." },
-            { verse: "Mateo 5:16 — 'Así alumbre vuestra luz delante de los hombres...'", explanation: "Nuestras acciones glorifican al Creador." },
-            { verse: "Salmos 145:18 — 'Cercano está Jehová a todos los que le invocan...'", explanation: "Él escucha con atención cada oración sincera." },
-            { verse: "1 Tesalonicenses 5:16 — 'Estad siempre gozosos. Orad sin cesar.'", explanation: "La oración constante mantiene vivificantes nuestro espíritu." },
-            { verse: "Salmos 37:5 — 'Encomienda a Jehová tu camino, y confía en él; y él hará.'", explanation: "Dejamos nuestros planes en sus sabias manos." },
-            { verse: "Apocalipsis 22:13 — 'Yo soy el Alfa y la Omega, el principio y el fin, el primero y el último.'", explanation: "Jesucristo es soberano sobre el tiempo y la historia." },
-            { verse: "Isaías 6:8 — 'Heme aquí, envíame a mí.'", explanation: "Un corazón dispuesto para servir con pasión al Señor." }
+            { verse: "Apocalipsis 5:5 — 'He aquí el León de la tribu de Judá... ha vencido.'", explanation: "Jesús es el verdadero León que conquistó el pecado y la muerte por nosotros." },
+            { verse: "Juan 16:33 — 'En el mundo tendréis aflicción; pero confiad, yo he vencido al mundo.'", explanation: "Su victoria sobre el mundo es nuestra mayor fuente de paz y seguridad." },
+            { verse: "Salmos 23:1 — 'Jehová es mi pastor; nada me faltará.'", explanation: "Bajo Su guía divina, nunca nos faltará Su providencia." },
+            { verse: "Isaías 41:10 — 'No temas, porque yo estoy contigo.'", explanation: "La presencia del León victorioso disipa todo temor." },
+            { verse: "Filipenses 4:13 — 'Todo lo puedo en Cristo que me fortalece.'", explanation: "Su poder nos capacita para superar cualquier prueba." },
+            { verse: "Salmos 27:1 — 'El Señor es mi luz y mi salvación; ¿de quién temeré?'", explanation: "Con Él como luz de nuestro camino, ninguna oscuridad prevalece." },
+            { verse: "Josué 1:9 — 'Esfuérzate y sé valiente; no temas... Jehová tu Dios estará contigo.'", explanation: "Avanzamos con valentía sabiendo que Él nos respalda." },
+            { verse: "Salmos 46:1 — 'Dios es nuestro amparo y fortaleza.'", explanation: "En Él encontramos un refugio seguro y pronto auxilio." },
+            { verse: "Proverbios 3:5 — 'Confía en Jehová con todo tu corazón.'", explanation: "Su sabiduría perfecta supera cualquier razonamiento humano." },
+            { verse: "Romanos 8:31 — 'Si Dios es por nosotros, ¿quién contra nosotros?'", explanation: "El respaldo del Creador nos hace más que vencedores." },
+            { verse: "Salmos 91:2 — 'Esperanza mía, y castillo mío; mi Dios, en quien confiaré.'", explanation: "Nuestra confianza descansa firmemente en el Todopoderoso." },
+            { verse: "Isaías 40:31 — 'Los que esperan en Jehová tendrán nuevas fuerzas.'", explanation: "Esperar en el Señor renueva por completo nuestro vigor." },
+            { verse: "Salmos 119:105 — 'Lámpara es a mis pies tu palabra.'", explanation: "Su bendita palabra guía cada uno de nuestros pasos." },
+            { verse: "Mateo 6:33 — 'Buscad primeramente el reino de Dios y su justicia.'", explanation: "Poner a Dios en primer lugar trae bendición completa." },
+            { verse: "Salmos 37:4 — 'Deléitate asimismo en Jehová, y él te concederá las peticiones de tu corazón.'", explanation: "Buscar Su presencia llena de gozo verdadero nuestra vida." },
+            { verse: "Juan 14:27 — 'La paz os dejo, mi paz os doy.'", explanation: "Jesús nos regala una paz que el mundo no puede imitar." },
+            { verse: "Proverbios 18:10 — 'Torre fuerte es el nombre de Jehová.'", explanation: "Su nombre es nuestro escudo y protección inexpugnable." },
+            { verse: "Salmos 34:8 — 'Gustad, y ved que es bueno Jehová.'", explanation: "Experimentar Su amor es la experiencia más hermosa." },
+            { verse: "2 Corintios 5:7 — 'Porque por fe andamos, no por vista.'", explanation: "Caminamos seguros confiando en las promesas celestiales." },
+            { verse: "Salmos 121:2 — 'Mi socorro viene de Jehová, que hizo los cielos y la tierra.'", explanation: "El Creador del universo cuida de cada detalle tuyo." },
+            { verse: "Efesios 2:10 — 'Porque somos hechura suya, creados en Cristo Jesús para buenas obras.'", explanation: "Fuiste diseñado con un propósito divino y especial." },
+            { verse: "Santiago 4:8 — 'Acercaos a Dios, y él se acercará a vosotros.'", explanation: "Una relación cercana con el Señor transforma nuestro interior." },
+            { verse: "Salmos 56:3 — 'En el día que temo, yo en ti confío.'", explanation: "La fe en Dios es la mejor respuesta ante la duda o el miedo." },
+            { verse: "Colosenses 3:23 — 'Y todo lo que hagáis, hacedlo de corazón, como para el Señor.'", explanation: "Nuestra labor diaria debe reflejar excelencia y amor para Él." },
+            { verse: "Salmos 23:3 — 'Confortará mi alma; me guiará por sendas de justicia.'", explanation: "El Buen Pastor restaura nuestras fuerzas y nos encamina." },
+            { verse: "Gálatas 5:22 — 'Mas el fruto del Espíritu es amor, gozo, paz, paciencia...'", explanation: "Su Espíritu obra un carácter hermoso en nosotros." },
+            { verse: "Salmos 138:3 — 'En el día que llamé, me respondiste.'", explanation: "Dios escucha con atención y amor el clamor de sus hijos." },
+            { verse: "1 Juan 4:19 — 'Nosotros le amamos a él, porque él nos amó primero.'", explanation: "Su gracia inagotable se adelantó para alcanzarnos." },
+            { verse: "Salmos 19:14 — 'Sean gratos los dichos de mi boca y la meditación de mi corazón.'", explanation: "Buscamos agradar a Dios con palabras y pensamientos limpios." },
+            { verse: "Hebreos 11:1 — 'Es, pues, la fe la certeza de lo que se espera.'", explanation: "La fe nos mantiene firmes en las promesas invisibles de Dios." },
+            { verse: "Salmos 84:11 — 'Porque sol y escudo es Jehová Dios; gracia y gloria dará.'", explanation: "Él alumbra nuestra senda y nos cubre con Su favor." },
+            { verse: "Zacarías 4:6 — 'No con ejército, ni con fuerza, sino con mi Espíritu.'", explanation: "Las grandes victorias espirituales se obtienen con Su poder." },
+            { verse: "Salmos 107:1 — 'Alabad a Jehová, porque él es bueno, porque para siempre es su misericordia.'", explanation: "Su inmensa misericordia jamás se agota." },
+            { verse: "Romanos 12:2 — 'Transformaos por medio de la renovación de vuestro entendimiento.'", explanation: "Renovamos nuestra mente a diario con la verdad bíblica." },
+            { verse: "Salmos 121:7 — 'Jehová te guardará de todo mal; él guardará tu alma.'", explanation: "Su custodia sobre nosotros es perfecta y permanente." },
+            { verse: "Mateo 5:16 — 'Así alumbre vuestra luz delante de los hombres...'", explanation: "Nuestras buenas acciones glorifican a nuestro Padre celestial." },
+            { verse: "Salmos 145:18 — 'Cercano está Jehová a todos los que le invocan de veras.'", explanation: "Él está siempre atento para responder con amor." },
+            { verse: "1 Tesalonicenses 5:16 — 'Estad siempre gozosos. Orad sin cesar.'", explanation: "La oración constante mantiene vivificante nuestro espíritu." },
+            { verse: "Salmos 37:5 — 'Encomienda a Jehová tu camino, y confía en él; y él hará.'", explanation: "Dejamos nuestros proyectos en Sus sabias manos." },
+            { verse: "Apocalipsis 22:13 — 'Yo soy el Alfa y la Omega, el principio y el fin, el primero y el último.'", explanation: "Jesucristo es soberano absoluto sobre la historia y la eternidad." }
         ];
 
         let currentLevel = 0;
@@ -349,20 +360,16 @@
         let isAudioEnabled = true;
         let bestVoice = null;
 
-        // CONFIGURACIÓN DEL JUEGO TIPO SNAKE (LEÓN)
-        const canvas = document.getElementById('snake-canvas');
+        // MOTOR RUNNER CON SILUETA ANATÓMICA REALISTA DEL LEÓN
+        const canvas = document.getElementById('runner-canvas');
         const ctx = canvas.getContext('2d');
-        const gridSize = 20;
-        let tileCountX = canvas.width / gridSize;
-        let tileCountY = canvas.height / gridSize;
 
-        let snake = [{x: 10, y: 10}];
-        let food = {x: 5, y: 5};
-        let dx = 1;
-        let dy = 0;
-        let score = 0;
-        let gameInterval = null;
-        let isGameRunning = false;
+        let lion = { x: 45, y: 170, width: 60, height: 40, vy: 0, gravity: 0.85, jumpPower: -13, grounded: true, animFrame: 0 };
+        let obstacles = [];
+        let obstacleTimer = 0;
+        let obstaclesClearedInLevel = 0;
+        let gameRunning = false;
+        let animationFrameId = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             initAudio();
@@ -373,19 +380,23 @@
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             
             const startBtn = document.getElementById('start-mission-btn');
+            const startIcon = document.getElementById('start-lock-icon');
+            const startText = document.getElementById('start-btn-text');
+
             startBtn.disabled = true;
-            startBtn.className = "flex-1 py-3 px-6 rounded-xl bg-stone-700 text-stone-400 font-black uppercase text-xs shadow-lg transition opacity-50 cursor-not-allowed flex items-center justify-center gap-2";
-            startBtn.innerHTML = `<i class="fa-solid fa-volume-high animate-pulse"></i> Narrando...`;
+            startBtn.className = "flex-1 py-3.5 px-6 rounded-xl bg-stone-800 text-amber-400 font-black uppercase text-xs shadow-lg transition opacity-60 cursor-not-allowed flex items-center justify-center gap-2";
+            startIcon.className = "fa-solid fa-volume-high animate-pulse";
+            startText.innerText = "Narrando mensaje...";
 
             const text1 = document.getElementById('narrative-text-1').innerText;
             const text2 = document.getElementById('narrative-text-2').innerText;
             const text3 = document.getElementById('narrative-text-3').innerText;
-            const fullNarrative = `${text1} ${text2} ${text3}`;
 
-            speakText(fullNarrative, () => {
+            speakText(`${text1} ${text2} ${text3}`, () => {
                 startBtn.disabled = false;
-                startBtn.className = "flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black font-black uppercase text-xs shadow-lg active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer";
-                startBtn.innerHTML = `<i class="fa-solid fa-play"></i> ¡Comenzar la Aventura!`;
+                startBtn.className = "flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black font-black uppercase text-xs shadow-lg active:scale-95 transition cursor-pointer flex items-center justify-center gap-2";
+                startIcon.className = "fa-solid fa-play text-black";
+                startText.innerText = "¡Comenzar Desafío!";
             });
         }
 
@@ -401,23 +412,26 @@
             loadSavedProgress();
             renderLevelGrid();
             renderLionDen();
-            initGame();
+            startRunnerGame();
         }
 
         function loadSavedProgress() {
             try {
-                const savedMax = localStorage.getItem('lion_40_max');
-                const savedCompleted = localStorage.getItem('lion_40_completed');
+                const savedMax = localStorage.getItem('jesuselleon_40_max');
+                const savedCompleted = localStorage.getItem('jesuselleon_40_completed');
                 if (savedMax !== null) maxUnlockedLevel = parseInt(savedMax, 10);
                 if (savedCompleted !== null) completedLevels = new Set(JSON.parse(savedCompleted));
+                
+                currentLevel = maxUnlockedLevel;
+                if (currentLevel >= 40) currentLevel = 39;
             } catch(e) {}
             updateHUD();
         }
 
         function saveProgress() {
             try {
-                localStorage.setItem('lion_40_max', maxUnlockedLevel);
-                localStorage.setItem('lion_40_completed', JSON.stringify(Array.from(completedLevels)));
+                localStorage.setItem('jesuselleon_40_max', maxUnlockedLevel);
+                localStorage.setItem('jesuselleon_40_completed', JSON.stringify(Array.from(completedLevels)));
             } catch(e) {}
         }
 
@@ -425,6 +439,7 @@
             document.getElementById('star-score-hud').innerText = `${completedLevels.size} / 40`;
             document.getElementById('rescued-count').innerText = `${completedLevels.size} / 40`;
             document.getElementById('level-indicator').innerText = `Nivel ${currentLevel + 1} de 40`;
+            document.getElementById('obstacles-counter').innerText = `Rocas superadas: ${obstaclesClearedInLevel} / 3`;
         }
 
         function renderLionDen() {
@@ -466,8 +481,9 @@
                 if (i <= maxUnlockedLevel) {
                     btn.onclick = () => {
                         currentLevel = i;
+                        obstaclesClearedInLevel = 0;
                         renderLevelGrid();
-                        initGame();
+                        startRunnerGame();
                     };
                 } else {
                     btn.disabled = true;
@@ -479,114 +495,212 @@
             document.getElementById('progress-percent').innerText = `${percent}%`;
         }
 
-        // LÓGICA DEL JUEGO SNAKE
-        function initGame() {
-            snake = [{x: 10, y: 10}, {x: 9, y: 10}];
-            dx = 1;
-            dy = 0;
-            score = 0;
-            spawnFood();
+        function startRunnerGame() {
+            lion.y = 170;
+            lion.vy = 0;
+            lion.grounded = true;
+            obstacles = [];
+            obstacleTimer = 0;
+            gameRunning = true;
             updateHUD();
-
-            if (gameInterval) clearInterval(gameInterval);
-            gameInterval = setInterval(gameLoop, 130);
-            isGameRunning = true;
-            speakText(`Nivel ${currentLevel + 1}. Guía al león para atrapar el tesoro.`);
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            runnerLoop();
         }
 
-        function spawnFood() {
-            food = {
-                x: Math.floor(Math.random() * tileCountX),
-                y: Math.floor(Math.random() * tileCountY)
-            };
-            // Evitar que aparezca sobre la serpiente
-            snake.forEach(part => {
-                if (part.x === food.x && part.y === food.y) spawnFood();
-            });
-        }
-
-        function changeDirection(dir) {
-            if (dir === 'UP' && dy === 0) { dx = 0; dy = -1; }
-            if (dir === 'DOWN' && dy === 0) { dx = 0; dy = 1; }
-            if (dir === 'LEFT' && dx === 0) { dx = -1; dy = 0; }
-            if (dir === 'RIGHT' && dx === 0) { dx = 1; dy = 0; }
+        function jumpLion() {
+            if (lion.grounded && gameRunning) {
+                lion.vy = lion.jumpPower;
+                lion.grounded = false;
+                playJumpSound();
+            }
         }
 
         window.addEventListener('keydown', e => {
-            if (e.key === 'ArrowUp' || e.key === 'w') changeDirection('UP');
-            if (e.key === 'ArrowDown' || e.key === 's') changeDirection('DOWN');
-            if (e.key === 'ArrowLeft' || e.key === 'a') changeDirection('LEFT');
-            if (e.key === 'ArrowRight' || e.key === 'd') changeDirection('RIGHT');
+            if (e.code === 'Space' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                jumpLion();
+            }
         });
 
-        function gameLoop() {
-            if (!isGameRunning) return;
-
-            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-
-            // Colisión con paredes
-            if (head.x < 0 || head.x >= tileCountX || head.y < 0 || head.y >= tileCountY) {
-                gameOver();
-                return;
-            }
-
-            // Colisión con sí mismo
-            for (let i = 0; i < snake.length; i++) {
-                if (head.x === snake[i].x && head.y === snake[i].y) {
-                    gameOver();
-                    return;
-                }
-            }
-
-            snake.unshift(head);
-
-            // Comer tesoro
-            if (head.x === food.x && head.y === food.y) {
-                playWinSound();
-                score++;
-                spawnFood();
-
-                // Al atrapar 1 tesoro se supera el nivel actual
-                clearInterval(gameInterval);
-                isGameRunning = false;
-                onLevelCompleted();
-            } else {
-                snake.pop();
-            }
-
-            drawCanvas();
-        }
-
-        function drawCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Dibujar comida (Corona / Tesoro)
+        // DIBUJO REALISTA DE SILUETA DE LEÓN
+        function drawRealisticLion(x, y, grounded, animFrame) {
+            ctx.save();
             ctx.fillStyle = '#facc15';
             ctx.shadowColor = '#f59e0b';
             ctx.shadowBlur = 12;
-            ctx.beginPath();
-            ctx.arc((food.x + 0.5) * gridSize, (food.y + 0.5) * gridSize, gridSize * 0.4, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
 
-            // Dibujar al león (Culebrita)
-            snake.forEach((part, index) => {
-                ctx.fillStyle = index === 0 ? '#f97316' : '#fbbf24';
-                ctx.strokeStyle = '#78350f';
-                ctx.lineWidth = 2;
-                ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize, gridSize);
-                ctx.strokeRect(part.x * gridSize, part.y * gridSize, gridSize, gridSize);
-            });
+            ctx.translate(x, y);
+
+            // Melena grande e imponiente
+            ctx.beginPath();
+            ctx.ellipse(42, 10, 16, 18, Math.PI / 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Cabeza
+            ctx.beginPath();
+            ctx.arc(48, 10, 9, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Hocicof
+            ctx.beginPath();
+            ctx.ellipse(56, 12, 6, 4, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Cuerpo esbelto
+            ctx.beginPath();
+            ctx.ellipse(24, 20, 22, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Lomo / Cuello
+            ctx.beginPath();
+            ctx.moveTo(14, 12);
+            ctx.quadraticCurveTo(30, 4, 40, 10);
+            ctx.lineTo(28, 26);
+            ctx.closePath();
+            ctx.fill();
+
+            // Patas traseras y delanteras animadas
+            const legPhase = Math.sin(animFrame) * 12;
+
+            // Patas traseras
+            ctx.beginPath();
+            ctx.lineWidth = 6;
+            ctx.strokeStyle = '#facc15';
+            ctx.lineCap = 'round';
+
+            if (grounded) {
+                // Izquierda trasera
+                ctx.moveTo(10, 26);
+                ctx.lineTo(6 - legPhase * 0.5, 38);
+                // Derecha trasera
+                ctx.moveTo(18, 26);
+                ctx.lineTo(16 + legPhase * 0.5, 38);
+
+                // Delanteras
+                ctx.moveTo(34, 26);
+                ctx.lineTo(32 + legPhase, 38);
+                ctx.moveTo(42, 26);
+                ctx.lineTo(44 - legPhase, 38);
+            } else {
+                // En el aire
+                ctx.moveTo(10, 26); ctx.lineTo(2, 34);
+                ctx.moveTo(18, 26); ctx.lineTo(10, 36);
+                ctx.moveTo(34, 26); ctx.lineTo(46, 32);
+                ctx.moveTo(42, 26); ctx.lineTo(52, 34);
+            }
+            ctx.stroke();
+
+            // Cola realista con borla en movimiento
+            ctx.beginPath();
+            ctx.lineWidth = 3.5;
+            ctx.strokeStyle = '#facc15';
+            ctx.moveTo(4, 18);
+            const tailBend = grounded ? Math.sin(animFrame * 0.8) * 8 : -10;
+            ctx.quadraticCurveTo(-10, 10 + tailBend, -14, -2 + tailBend);
+            ctx.stroke();
+
+            // Borla de la cola
+            ctx.beginPath();
+            ctx.arc(-14, -2 + tailBend, 4.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function runnerLoop() {
+            if (!gameRunning) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Suelo de la sabana
+            ctx.fillStyle = '#291504';
+            ctx.fillRect(0, 214, canvas.width, 46);
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillRect(0, 210, canvas.width, 4);
+
+            // Física del león
+            lion.vy += lion.gravity;
+            lion.y += lion.vy;
+            if (lion.y >= 170) {
+                lion.y = 170;
+                lion.vy = 0;
+                lion.grounded = true;
+            }
+
+            lion.animFrame += 0.25;
+
+            // DIBUJAR LEÓN REALISTA
+            drawRealisticLion(lion.x, lion.y, lion.grounded, lion.animFrame);
+
+            // DIFICULTAD PROGRESIVA SEGÚN NIVEL
+            let speedMultiplier = 4.5 + (currentLevel * 0.1);
+
+            // GENERACIÓN DE OBSTÁCULOS (ROCAS)
+            obstacleTimer++;
+            if (obstacleTimer > Math.max(68, 112 - (currentLevel * 1.1))) {
+                obstacles.push({ x: canvas.width, y: 182, width: 26, height: 28 });
+                obstacleTimer = 0;
+            }
+
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                let obs = obstacles[i];
+                obs.x -= speedMultiplier;
+
+                // Dibujar Roca
+                ctx.fillStyle = '#b45309';
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(obs.x, obs.y + obs.height);
+                ctx.lineTo(obs.x + 6, obs.y + 6);
+                ctx.lineTo(obs.x + obs.width / 2, obs.y);
+                ctx.lineTo(obs.x + obs.width - 4, obs.y + 8);
+                ctx.lineTo(obs.x + obs.width, obs.y + obs.height);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // COLISIÓN (Caja ajustada)
+                if (
+                    lion.x + 8 < obs.x + obs.width &&
+                    lion.x + lion.width > obs.x &&
+                    lion.y + 10 < obs.y + obs.height &&
+                    lion.y + lion.height > obs.y
+                ) {
+                    gameOver();
+                    return;
+                }
+
+                // OBSTÁCULO SUPERADO
+                if (obs.x + obs.width < lion.x && !obs.passed) {
+                    obs.passed = true;
+                    obstaclesClearedInLevel++;
+                    updateHUD();
+
+                    if (obstaclesClearedInLevel >= 3) {
+                        gameRunning = false;
+                        playWinSound();
+                        triggerShockLightningEffect();
+                        onLevelCompleted();
+                        return;
+                    }
+                }
+
+                if (obs.x + obs.width < 0) {
+                    obstacles.splice(i, 1);
+                }
+            }
+
+            animationFrameId = requestAnimationFrame(runnerLoop);
         }
 
         function gameOver() {
-            clearInterval(gameInterval);
-            isGameRunning = false;
+            gameRunning = false;
             playErrorSound();
-            speakText("¡Cuidado explorador! Inténtalo de nuevo.");
+            speakText("¡Cuidado con la roca! Inténtalo de nuevo.");
             setTimeout(() => {
-                initGame();
-            }, 1000);
+                startRunnerGame();
+            }, 900);
         }
 
         function onLevelCompleted() {
@@ -606,12 +720,28 @@
 
         function showVerseModal() {
             const verseData = versesDB[currentLevel % versesDB.length];
-            document.getElementById('modal-level-title').innerText = `¡NIVEL ${currentLevel + 1} COMPLETADO!`;
+            document.getElementById('modal-level-title').innerText = `¡NIVEL ${currentLevel + 1} COMPLETADO - CORONA GANADA!`;
             document.getElementById('modal-verse').innerText = verseData.verse;
             document.getElementById('modal-explanation').innerText = verseData.explanation;
 
+            const nextBtn = document.getElementById('next-level-btn');
+            const lockIcon = document.getElementById('verse-lock-icon');
+            const btnText = document.getElementById('verse-btn-text');
+
+            // BLOQUEAR BOTÓN HASTA FINALIZAR AUDIO
+            nextBtn.disabled = true;
+            nextBtn.className = "w-full py-3.5 rounded-xl bg-stone-800 text-stone-500 font-black uppercase text-xs shadow-lg transition opacity-50 cursor-not-allowed flex items-center justify-center gap-2";
+            lockIcon.className = "fa-solid fa-lock";
+            btnText.innerText = "Escuchando Versículo...";
+
             document.getElementById('verse-modal').classList.remove('hidden');
-            speakText(`¡Nivel ${currentLevel + 1} completado! ${verseData.verse}. ${verseData.explanation}`);
+
+            speakText(`¡Rayo Shock activado! Corona ganada. Como dice en ${verseData.verse}. ${verseData.explanation}`, () => {
+                nextBtn.disabled = false;
+                nextBtn.className = "w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black uppercase text-xs shadow-lg active:scale-95 transition cursor-pointer flex items-center justify-center gap-2";
+                lockIcon.className = "fa-solid fa-arrow-right text-black";
+                btnText.innerText = "Continuar Carrera";
+            });
         }
 
         function closeVerseModalAndContinue() {
@@ -620,11 +750,13 @@
 
             if (completedLevels.size === 40 || currentLevel === 39) {
                 document.getElementById('trophy-modal').classList.remove('hidden');
-                speakText("¡Felicidades! Has completado los 40 niveles del león explorador.");
+                triggerCelebrationConfetti();
+                speakText("¡Felicidades! Has completado los 40 niveles con las 40 coronas en la victoria de Jesús el León.");
             } else {
                 if (currentLevel < 39) currentLevel++;
+                obstaclesClearedInLevel = 0;
                 renderLevelGrid();
-                initGame();
+                startRunnerGame();
             }
         }
 
@@ -636,26 +768,99 @@
 
         function resetAndPlayAgain() {
             try {
-                localStorage.removeItem('lion_40_max');
-                localStorage.removeItem('lion_40_completed');
+                localStorage.removeItem('jesuselleon_40_max');
+                localStorage.removeItem('jesuselleon_40_completed');
             } catch(e) {}
             maxUnlockedLevel = 0;
             completedLevels.clear();
             currentLevel = 0;
+            obstaclesClearedInLevel = 0;
             updateHUD();
             renderLevelGrid();
             renderLionDen();
             document.getElementById('trophy-modal').classList.add('hidden');
             document.getElementById('verse-modal').classList.add('hidden');
-            initGame();
+            startRunnerGame();
         }
 
-        // AUDIO Y SÍNTESIS DE VOZ
+        function triggerShockLightningEffect() {
+            document.body.classList.add('flash-screen');
+            setTimeout(() => document.body.classList.remove('flash-screen'), 300);
+        }
+
+        const celebrationCanvas = document.getElementById('celebration-canvas');
+        const cCtx = celebrationCanvas ? celebrationCanvas.getContext('2d') : null;
+        let confettiItems = [];
+
+        function triggerCelebrationConfetti() {
+            if (!celebrationCanvas) return;
+            celebrationCanvas.width = window.innerWidth;
+            celebrationCanvas.height = window.innerHeight;
+            const colors = ['#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#ec4899', '#facc15'];
+
+            for (let i = 0; i < 90; i++) {
+                confettiItems.push({
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight / 2,
+                    vx: (Math.random() - 0.5) * 18,
+                    vy: -Math.random() * 14 - 4,
+                    size: 8 + Math.random() * 8,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    alpha: 1.0
+                });
+            }
+            animateConfetti();
+        }
+
+        function animateConfetti() {
+            if (!cCtx) return;
+            cCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+            for (let i = confettiItems.length - 1; i >= 0; i--) {
+                let p = confettiItems[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.3;
+                p.alpha -= 0.012;
+
+                cCtx.save();
+                cCtx.fillStyle = p.color;
+                cCtx.globalAlpha = Math.max(p.alpha, 0);
+                cCtx.fillRect(p.x, p.y, p.size, p.size);
+                cCtx.restore();
+
+                if (p.alpha <= 0) confettiItems.splice(i, 1);
+            }
+
+            if (confettiItems.length > 0) {
+                requestAnimationFrame(animateConfetti);
+            }
+        }
+
+        // AUDIO
         let audioCtx = null;
         function initAudio() {
             try {
                 if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 if (audioCtx.state === 'suspended') audioCtx.resume();
+            } catch(e) {}
+        }
+
+        function playJumpSound() {
+            try {
+                initAudio();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(320, now);
+                osc.frequency.exponentialRampToValueAtTime(650, now + 0.15);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.15);
             } catch(e) {}
         }
 
